@@ -13,3 +13,7 @@ This repository contains the public product and careers experience, hardened for
 ## Release policy
 
 Use Preview deployments for changes before promoting to Production. Sanity and ATS integrations are intentionally not connected yet.
+
+## Git-backed production
+
+`main` is the tracked Production branch in Vercel. This baseline commit establishes GitHub as the source of truth for future Production deployments.
