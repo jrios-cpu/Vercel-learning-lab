@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
 
@@ -8,7 +8,8 @@ describe("RXL header", () => {
   it("renders RXL navigation and a configurator CTA", () => {
     render(<RxlHeader preview />);
     expect(screen.getByRole("link", { name: /RXL home/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Solutions/i })).toBeInTheDocument();
+    const primaryNav = screen.getByRole("navigation", { name: "Primary navigation" });
+    expect(within(primaryNav).getByRole("link", { name: "Solutions" })).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /Start Project/i })[0]).toHaveAttribute("href", "/configurator");
   });
 
@@ -22,8 +23,8 @@ describe("RXL header", () => {
     const menu = screen.getByRole("button", { name: "Menu" });
     fireEvent.click(menu);
     expect(menu).toHaveAttribute("aria-expanded", "true");
-    const capabilityLinks = screen.getAllByRole("link", { name: "Capabilities" });
-    fireEvent.click(capabilityLinks[capabilityLinks.length - 1]);
+    const mobileNav = screen.getByRole("navigation", { name: "Mobile navigation" });
+    fireEvent.click(within(mobileNav).getByRole("link", { name: "Capabilities" }));
     expect(menu).toHaveAttribute("aria-expanded", "false");
   });
 });
