@@ -34,6 +34,9 @@ jobs:
       - name: Lint tests
         continue-on-error: true
         run: npx eslint tests --max-warnings=0
+      - name: Lint root configs
+        continue-on-error: true
+        run: npx eslint next.config.ts vitest.config.ts eslint.config.mjs --max-warnings=0
       - name: Typecheck
         continue-on-error: true
         run: npm run typecheck
