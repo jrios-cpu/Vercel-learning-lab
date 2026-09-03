@@ -12,7 +12,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,11 +22,26 @@ jobs:
           node-version: '24.x'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Lint
-        run: npm run lint
+      - name: Lint app
+        continue-on-error: true
+        run: npx eslint app --max-warnings=0
+      - name: Lint components
+        continue-on-error: true
+        run: npx eslint components --max-warnings=0
+      - name: Lint lib
+        continue-on-error: true
+        run: npx eslint lib --max-warnings=0
+      - name: Lint tests
+        continue-on-error: true
+        run: npx eslint tests --max-warnings=0
       - name: Typecheck
+        continue-on-error: true
         run: npm run typecheck
       - name: Tests
+        continue-on-error: true
         run: npm run test
       - name: Next build
+        continue-on-error: true
         run: npx next build
+      - name: Enforce full repository gate
+        run: npm run check
