@@ -16,4 +16,16 @@ describe("RXL catalog", () => {
     expect(result.items.every((product) => product.categorySlug === "cabinets" && product.series === "VaultLine")).toBe(true);
     expect(result.facets.series.VaultLine).toBeGreaterThan(0);
   });
+
+  it("searches representative products through the provider contract", async () => {
+    const result = await catalogProvider.search({
+      query: "FlowCore",
+      filters: {},
+      sort: "relevance",
+      page: 1,
+      perPage: 12,
+    });
+    expect(result.total).toBeGreaterThan(0);
+    expect(result.items.every((product) => product.series === "FlowCore")).toBe(true);
+  });
 });
