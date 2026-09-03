@@ -20,9 +20,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24.x'
-          cache: npm
-          cache-dependency-path: package.json
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Full repository gate
-        run: npm run check
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests
+        run: npm run test
+      - name: Next build
+        run: npx next build
