@@ -50,7 +50,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
           </Link>
           <nav className="rxl-desktop-nav" aria-label="Primary navigation">
             {nav.map(([label, href]) => {
-              const active = pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+              const active = pathname === href || pathname.startsWith(`${href}/`);
               if (label === "Solutions") {
                 return (
                   <div className="rxl-nav-item" key={href}>
