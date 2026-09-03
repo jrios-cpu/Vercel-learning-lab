@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
 
@@ -15,5 +15,15 @@ describe("RXL header", () => {
   it("does not expose unverified phone data", () => {
     render(<RxlHeader preview />);
     expect(screen.queryByRole("link", { name: /^Call$/i })).not.toBeInTheDocument();
+  });
+
+  it("closes mobile navigation when a destination is chosen", () => {
+    render(<RxlHeader preview />);
+    const menu = screen.getByRole("button", { name: "Menu" });
+    fireEvent.click(menu);
+    expect(menu).toHaveAttribute("aria-expanded", "true");
+    const capabilityLinks = screen.getAllByRole("link", { name: "Capabilities" });
+    fireEvent.click(capabilityLinks[capabilityLinks.length - 1]);
+    expect(menu).toHaveAttribute("aria-expanded", "false");
   });
 });
