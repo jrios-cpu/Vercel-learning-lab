@@ -4,36 +4,30 @@ import { createElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
 
-type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  href: string;
-  children: ReactNode;
-};
+type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; children: ReactNode };
 
 vi.mock("next/link", () => ({
   default: ({ href, children, onClick, ...props }: MockLinkProps) =>
-    createElement(
-      "a",
-      {
-        ...props,
-        href,
-        onClick: (event: MouseEvent<HTMLAnchorElement>) => {
-          event.preventDefault();
-          onClick?.(event);
-        },
-      },
-      children,
-    ),
+    createElement("a", { ...props, href, onClick: (event: MouseEvent<HTMLAnchorElement>) => { event.preventDefault(); onClick?.(event); } }, children),
 }));
-
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
 describe("RXL header", () => {
-  it("renders RXL navigation and a configurator CTA", () => {
+  it("matches the approved primary navigation and configurator CTA", () => {
     render(<RxlHeader preview />);
     expect(screen.getByRole("link", { name: /RXL home/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole("navigation", { name: "Primary navigation" });
-    expect(within(primaryNav).getByRole("link", { name: "Solutions" })).toBeInTheDocument();
+    const labels = within(primaryNav).getAllByRole("link").map((link) => link.textContent);
+    expect(labels).toEqual(["Capabilities", "Solutions", "Workflow", "Case Studies", "Contact"]);
     expect(screen.getAllByRole("link", { name: /Start Project/i })[0]).toHaveAttribute("href", "/configurator");
+  });
+
+  it("keeps Solutions expansion separate from the navigation label", () => {
+    render(<RxlHeader preview />);
+    const trigger = screen.getByRole("button", { name: "Open Solutions menu" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(trigger);
+    expect(screen.getByRole("button", { name: "Close Solutions menu" })).toHaveAttribute("aria-expanded", "true");
   });
 
   it("does not expose unverified phone data", () => {
