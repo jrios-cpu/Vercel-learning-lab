@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContactForm, PerformanceProbe, RfqForm, SelfTest, StatusTools } from "@/components/Interactive";
 import { jobBySlug, jobs, productBySlug, products, type Product } from "@/lib/data";
-import { featureFlags, isProduction, labModules, SITE_NAME, SITE_URL } from "@/lib/site";
+import { featureFlags, isProduction, labModules, SITE_URL } from "@/lib/site";
 
 type PageProps = {
   params: Promise<{ slug: string[] }>;
