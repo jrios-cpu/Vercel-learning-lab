@@ -1,6 +1,29 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from "react";
+import { createElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
+
+type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href: string;
+  children: ReactNode;
+};
+
+vi.mock("next/link", () => ({
+  default: ({ href, children, onClick, ...props }: MockLinkProps) =>
+    createElement(
+      "a",
+      {
+        ...props,
+        href,
+        onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+          event.preventDefault();
+          onClick?.(event);
+        },
+      },
+      children,
+    ),
+}));
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
