@@ -22,21 +22,18 @@ export function RxlHeader({ preview }: { preview: boolean }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
 
-  useEffect(() => {
+  const closeMenus = () => {
     setMobileOpen(false);
     setSolutionsOpen(false);
-  }, [pathname]);
+  };
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMobileOpen(false);
-        setSolutionsOpen(false);
-      }
+      if (event.key === "Escape") closeMenus();
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+  });
 
   return (
     <>
@@ -48,7 +45,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
       )}
       <header className="rxl-header">
         <div className="rxl-header-inner">
-          <Link className="rxl-brand" href="/" aria-label="RXL home">
+          <Link className="rxl-brand" href="/" aria-label="RXL home" onClick={closeMenus}>
             <RxlLogo />
           </Link>
           <nav className="rxl-desktop-nav" aria-label="Primary navigation">
@@ -57,7 +54,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
               if (label === "Solutions") {
                 return (
                   <div className="rxl-nav-item" key={href}>
-                    <Link className={`rxl-nav-link${active ? " active" : ""}`} href={href}>
+                    <Link className={`rxl-nav-link${active ? " active" : ""}`} href={href} onClick={closeMenus}>
                       {label}
                     </Link>
                     <button
@@ -74,7 +71,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
                 );
               }
               return (
-                <Link className={`rxl-nav-link${active ? " active" : ""}`} href={href} key={href}>
+                <Link className={`rxl-nav-link${active ? " active" : ""}`} href={href} key={href} onClick={closeMenus}>
                   {label}
                 </Link>
               );
@@ -86,7 +83,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
                 {RXL_SITE.contact.phone}
               </a>
             )}
-            <Link className="rxl-btn rxl-btn-primary rxl-btn-sm" href={RXL_SITE.primaryCta.href}>
+            <Link className="rxl-btn rxl-btn-primary rxl-btn-sm" href={RXL_SITE.primaryCta.href} onClick={closeMenus}>
               {RXL_SITE.primaryCta.label}
             </Link>
             <button
@@ -103,11 +100,11 @@ export function RxlHeader({ preview }: { preview: boolean }) {
         </div>
         <nav className={`rxl-mobile-nav${mobileOpen ? " open" : ""}`} id="rxl-mobile-nav" aria-label="Mobile navigation">
           {nav.map(([label, href]) => (
-            <Link href={href} key={href}>{label}</Link>
+            <Link href={href} key={href} onClick={closeMenus}>{label}</Link>
           ))}
-          <Link href="/customer-portal">Customer Portal</Link>
-          <Link href="/employees">Employee Login</Link>
-          <Link className="rxl-btn rxl-btn-primary" href={RXL_SITE.primaryCta.href}>{RXL_SITE.primaryCta.label}</Link>
+          <Link href="/customer-portal" onClick={closeMenus}>Customer Portal</Link>
+          <Link href="/employees" onClick={closeMenus}>Employee Login</Link>
+          <Link className="rxl-btn rxl-btn-primary" href={RXL_SITE.primaryCta.href} onClick={closeMenus}>{RXL_SITE.primaryCta.label}</Link>
         </nav>
       </header>
     </>
