@@ -3,6 +3,7 @@ import { Barlow_Semi_Condensed, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "./rxl.css";
 import "./rxl-polish.css";
+import "./rxl-boundaries.css";
 import { RxlFooter } from "@/components/rxl/layout/RxlFooter";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
 import { RXL_SITE, isPreviewEnvironment } from "@/lib/rxl/site";
