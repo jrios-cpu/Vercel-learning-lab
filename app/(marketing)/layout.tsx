@@ -5,5 +5,7 @@ import "../rxl-configurator.css";
 import "../rxl-careers.css";
 import "../rxl-analytics.css";
 import { AnalyticsProvider } from "@/components/rxl/analytics/AnalyticsProvider";
+import { RxlFooter } from "@/components/rxl/layout/RxlFooter";
+import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
 import { isPreviewEnvironment } from "@/lib/rxl/site";
-export default function MarketingLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <div className="rxl-marketing"><AnalyticsProvider preview={isPreviewEnvironment()}>{children}</AnalyticsProvider></div>; }
+export default function MarketingLayout({ children }: Readonly<{ children: React.ReactNode }>) { const preview = isPreviewEnvironment(); return <><RxlHeader preview={preview} /><div className="rxl-marketing"><AnalyticsProvider preview={preview}>{children}</AnalyticsProvider></div><RxlFooter /></>; }
