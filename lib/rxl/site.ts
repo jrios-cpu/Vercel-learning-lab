@@ -1,3 +1,21 @@
+export const PUBLIC_ROUTE_PATHS = [
+  "/",
+  "/about",
+  "/about/team",
+  "/industries",
+  "/products",
+  "/search",
+  "/configurator",
+  "/resources",
+  "/news",
+  "/careers",
+  "/contact",
+  "/customer-portal",
+  "/employees",
+  "/legal/privacy",
+  "/legal/terms",
+] as const;
+
 export const RXL_SITE = {
   name: "RXL USA",
   description: "Engineered infrastructure solutions for mission-critical environments.",
