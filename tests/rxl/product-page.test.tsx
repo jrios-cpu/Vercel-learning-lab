@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ProductPageView } from "@/components/rxl/product/ProductPageView";
 import type { Product } from "@/lib/rxl/types/catalog";
@@ -29,11 +29,13 @@ const product: Product = {
 };
 
 describe("ProductPageView", () => {
-  it("shows identity, specifications, documents, and configure CTA", () => {
+  it("shows identity, specifications, documents, and configure CTA through the tab flow", () => {
     render(<ProductPageView product={product} related={[]} />);
     expect(screen.getByRole("heading", { name: product.title })).toBeInTheDocument();
     expect(screen.getAllByText(product.partNumber).length).toBeGreaterThan(0);
-    expect(screen.getByRole("tab", { name: /Specifications/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Specifications/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("42U")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("tab", { name: /Documents/i }));
     expect(screen.getByText(/Specification sheet/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Configure|Start Project/i })).toHaveAttribute("href", expect.stringContaining(product.partNumber));
   });
