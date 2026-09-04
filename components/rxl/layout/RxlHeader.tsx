@@ -10,8 +10,8 @@ import { RxlLogo } from "./RxlLogo";
 const nav = [
   ["Capabilities", "/about"],
   ["Solutions", "/products"],
-  ["Workflow", "/#workflow"],
-  ["Case Studies", "/news"],
+  ["Workflow", "/workflow"],
+  ["Case Studies", "/case-studies"],
   ["Contact", "/contact"],
 ] as const;
 
@@ -37,7 +37,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
           <Link className="rxl-brand" href="/" aria-label="RXL home" onClick={closeMenus}><RxlLogo /></Link>
           <nav className="rxl-desktop-nav" aria-label="Primary navigation">
             {nav.map(([label, href]) => {
-              const active = href.startsWith("/#") ? false : pathname === href || pathname.startsWith(`${href}/`);
+              const active = pathname === href || pathname.startsWith(`${href}/`);
               if (label === "Solutions") {
                 return (
                   <div className="rxl-nav-item" key={href}>

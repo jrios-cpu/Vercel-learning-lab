@@ -2,6 +2,8 @@ export const PUBLIC_ROUTE_PATHS = [
   "/",
   "/about",
   "/about/team",
+  "/workflow",
+  "/case-studies",
   "/industries",
   "/products",
   "/search",
@@ -29,6 +31,14 @@ export const RXL_SITE = {
   external: {
     customerPortalUrl: null as string | null,
     employeeLoginUrl: null as string | null,
+  },
+  integrations: {
+    content: "local-provider",
+    catalogSearch: "local-provider",
+    ats: "not-connected",
+    customerPortal: "not-connected",
+    employeeIdentity: "not-connected",
+    quoteDelivery: "not-connected",
   },
 } as const;
 

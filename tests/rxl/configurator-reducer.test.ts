@@ -12,4 +12,16 @@ describe("configuratorReducer", () => {
     const next = configuratorReducer(selected, { type: "NEXT" });
     expect(next.step).toBe(2);
   });
+
+  it("allows editing completed steps without skipping ahead", () => {
+    const current = { ...initialConfiguratorState, step: 4 as const, application: "Colocation", productLine: "VaultLine", partNumbers: ["RXL-VL-4260-BK"] };
+    expect(configuratorReducer(current, { type: "GO_TO", step: 2 }).step).toBe(2);
+    expect(configuratorReducer({ ...initialConfiguratorState, step: 2 }, { type: "GO_TO", step: 4 }).step).toBe(2);
+  });
+
+  it("normalizes restored browser state", () => {
+    const restored = configuratorReducer(initialConfiguratorState, { type: "RESTORE", state: { ...initialConfiguratorState, step: 5, quantity: 0 } });
+    expect(restored.step).toBe(5);
+    expect(restored.quantity).toBe(1);
+  });
 });

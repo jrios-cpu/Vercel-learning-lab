@@ -6,6 +6,8 @@ describe("RXL public route inventory", () => {
     expect(PUBLIC_ROUTE_PATHS).toEqual(expect.arrayContaining([
       "/",
       "/about",
+      "/workflow",
+      "/case-studies",
       "/industries",
       "/products",
       "/search",

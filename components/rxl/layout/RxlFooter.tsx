@@ -4,8 +4,8 @@ import { RxlLogo } from "./RxlLogo";
 const footerLinks = [
   ["Capabilities", "/about"],
   ["Solutions", "/products"],
-  ["Workflow", "/#workflow"],
-  ["Case Studies", "/news"],
+  ["Workflow", "/workflow"],
+  ["Case Studies", "/case-studies"],
   ["Contact", "/contact"],
 ] as const;
 
@@ -15,7 +15,7 @@ export function RxlFooter() {
       <div className="rxl-wrap">
         <div className="rxl-footer-top">
           <div className="rxl-footer-brand"><RxlLogo /></div>
-          <div className="rxl-footer-contact-item"><span className="rxl-footer-dot">⌖</span><div><strong>Headquarters</strong><span>Reno, Nevada</span></div></div>
+          <div className="rxl-footer-contact-item"><span className="rxl-footer-dot">⌖</span><div><strong>RXL USA</strong><span>Address pending verification</span></div></div>
           <div className="rxl-footer-contact-item"><span className="rxl-footer-dot">◌</span><div><strong>Tel</strong><Link href="/contact">Contact RXL</Link></div></div>
           <div className="rxl-footer-contact-item"><span className="rxl-footer-dot">✉</span><div><strong>Email</strong><Link href="/contact">Contact RXL</Link></div></div>
         </div>

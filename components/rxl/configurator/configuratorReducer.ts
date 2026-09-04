@@ -22,6 +22,8 @@ export type ConfiguratorAction =
   | { type: "SET_TIMELINE"; value: string }
   | { type: "SET_NOTES"; value: string }
   | { type: "PRELOAD_PRODUCT"; productLine: string; partNumber: string; finish?: string }
+  | { type: "RESTORE"; state: ConfiguratorState }
+  | { type: "GO_TO"; step: ConfiguratorState["step"] }
   | { type: "NEXT" }
   | { type: "BACK" };
 
@@ -56,6 +58,8 @@ export function configuratorReducer(state: ConfiguratorState, action: Configurat
     case "SET_TIMELINE": return { ...state, targetTimeline: action.value };
     case "SET_NOTES": return { ...state, notes: action.value };
     case "PRELOAD_PRODUCT": return { ...state, productLine: action.productLine, partNumbers: [action.partNumber], selections: action.finish ? { ...state.selections, finish: action.finish } : state.selections };
+    case "RESTORE": return { ...action.state, step: Math.min(5, Math.max(1, action.state.step)) as ConfiguratorState["step"], quantity: Math.min(100000, Math.max(1, Math.round(action.state.quantity || 1))) };
+    case "GO_TO": return action.step <= state.step ? { ...state, step: action.step } : state;
     case "NEXT": return canAdvance(state) ? { ...state, step: Math.min(5, state.step + 1) as ConfiguratorState["step"] } : state;
     case "BACK": return { ...state, step: Math.max(1, state.step - 1) as ConfiguratorState["step"] };
     default: return state;

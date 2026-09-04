@@ -65,6 +65,7 @@ export default async function HomePage() {
             <h2>From Requirements To<br /><em>Installation</em></h2>
           </div>
           <DeliveryFlow />
+          <div className="rxl-home-center-action"><Link className="rxl-btn rxl-btn-ghost" href="/workflow">Explore Full Workflow</Link></div>
         </div>
       </section>
 
@@ -91,7 +92,7 @@ export default async function HomePage() {
             <h2>Engineering<br />Success <em>Stories</em></h2>
             <p>Explore how RXL transforms complex engineering challenges into fully integrated infrastructure solutions through innovative design, precision manufacturing, and expert installation.</p>
             <div className="rxl-case-stages">{caseStudyStages.map((stage) => <div key={stage}><i><b /></i>{stage}</div>)}</div>
-            <Link className="rxl-btn rxl-btn-primary" href="/news">Learn More</Link>
+            <Link className="rxl-btn rxl-btn-primary" href="/case-studies">Learn More</Link>
           </div>
           <div className="rxl-case-art"><RackArtwork cols={7} /></div>
         </div>
