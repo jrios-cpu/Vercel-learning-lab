@@ -7,6 +7,7 @@ import "../rxl-careers.css";
 import "../rxl-analytics.css";
 import "../rxl-rc1.css";
 import "../rxl-header-cta.css";
+import "../rxl-algolia.css";
 import { AnalyticsProvider } from "@/components/rxl/analytics/AnalyticsProvider";
 import { RxlFooter } from "@/components/rxl/layout/RxlFooter";
 import { RxlHeader } from "@/components/rxl/layout/RxlHeader";
