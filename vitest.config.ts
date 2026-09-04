@@ -5,6 +5,10 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],
+    isolate: true,
+    fileParallelism: false,
+    maxWorkers: 1,
+    clearMocks: true,
   },
   resolve: {
     alias: { "@": path.resolve(__dirname, ".") },
