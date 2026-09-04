@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AlgoliaExperience } from "@/components/rxl/catalog/AlgoliaExperience";
 import { CatalogBrowser } from "@/components/rxl/catalog/CatalogBrowser";
 import { catalogProvider } from "@/lib/rxl/providers/catalog";
 
@@ -25,7 +26,10 @@ export default async function ProductsPage() {
         </div>
       </section>
       <section className="rxl-section">
-        <div className="rxl-wrap"><CatalogBrowser products={products} /></div>
+        <div className="rxl-wrap">
+          <AlgoliaExperience />
+          <CatalogBrowser products={products} />
+        </div>
       </section>
     </main>
   );
