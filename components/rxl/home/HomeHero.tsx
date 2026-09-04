@@ -1,11 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { HomeContent } from "@/lib/rxl/types/content";
 import { HeroArtwork } from "./HomeArtwork";
+
+const HERO_IMAGE = "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1800&q=84";
 
 export function HomeHero({ content }: { content: HomeContent }) {
   return (
     <section className="rxl-home-hero">
       <div className="rxl-home-hero-art" aria-hidden="true"><HeroArtwork /></div>
+      <div className="rxl-home-hero-photo" aria-hidden="true">
+        <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" />
+      </div>
       <div className="rxl-hero-play" aria-hidden="true">
         <svg viewBox="0 0 18 18"><path d="M4 2l11 7-11 7V2z" fill="currentColor" /></svg>
       </div>

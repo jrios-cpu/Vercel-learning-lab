@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { DeliveryFlow } from "@/components/rxl/home/DeliveryFlow";
 import { HomeHero } from "@/components/rxl/home/HomeHero";
@@ -7,6 +8,32 @@ import { contentProvider } from "@/lib/rxl/providers/content";
 
 const featured = ["containment", "cooling", "cabinets"] as const;
 const caseStudyStages = ["Challenge", "Engineering Process", "Fabrication", "Installation"] as const;
+const previewMedia = {
+  about: {
+    src: "https://images.unsplash.com/photo-1772300704502-410f0fbd43bb?auto=format&fit=crop&w=1400&q=82",
+    alt: "Representative industrial engineering environment",
+  },
+  containment: {
+    src: "https://images.unsplash.com/photo-1643119775771-54a727776db5?auto=format&fit=crop&w=1200&q=82",
+    alt: "Representative engineered enclosure environment",
+  },
+  cooling: {
+    src: "https://images.unsplash.com/photo-1774770080861-bc2c50829c92?auto=format&fit=crop&w=1200&q=82",
+    alt: "Representative mission-critical infrastructure environment",
+  },
+  cabinets: {
+    src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=82",
+    alt: "Representative server rack environment",
+  },
+  caseStudy: {
+    src: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=82",
+    alt: "Representative precision engineering detail",
+  },
+  careers: {
+    src: "https://images.unsplash.com/photo-1774770080861-bc2c50829c92?auto=format&fit=crop&w=1400&q=82",
+    alt: "Modern collaborative infrastructure workspace",
+  },
+} as const;
 
 export default async function HomePage() {
   const home = await contentProvider.getHome();
@@ -22,7 +49,10 @@ export default async function HomePage() {
             <h2>Engineering the Future.<br />Delivering <em>With Precision.</em></h2>
           </div>
           <div className="rxl-home-split">
-            <div className="rxl-home-rack-visual"><div className="rxl-home-halo" /><RackArtwork tone="light" cols={5} /></div>
+            <div className="rxl-home-photo">
+              <Image src={previewMedia.about.src} alt={previewMedia.about.alt} width={1400} height={900} sizes="(max-width: 900px) 100vw, 50vw" />
+              <span className="rxl-media-label">Representative Preview imagery</span>
+            </div>
             <div className="rxl-home-copy">
               <p>RXL is more than a manufacturer. We are an engineering-driven infrastructure partner specializing in the design, fabrication, and installation of mission-critical solutions. From concept to commissioning, we provide a seamless, end-to-end approach that helps organizations build reliable, scalable, and high-performance environments.</p>
               <p>Driven by innovation and technical expertise, our team collaborates closely with data center operators, contractors, consultants, and enterprise clients to transform complex requirements into engineered solutions. Every project is backed by meticulous planning and precision execution.</p>
@@ -41,9 +71,13 @@ export default async function HomePage() {
           <div className="rxl-feature-card-grid">
             {featured.map((slug, index) => {
               const category = PRODUCT_CATEGORIES[slug];
+              const media = previewMedia[slug];
               return (
                 <Link className={`rxl-feature-card${index === 1 ? " rxl-feature-card-accent" : ""}`} href={`/products/${slug}`} key={slug}>
-                  <div className="rxl-feature-card-art"><RackArtwork cols={5} /></div>
+                  <div className="rxl-feature-card-art">
+                    <Image src={media.src} alt={media.alt} width={1200} height={760} sizes="(max-width: 700px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                    <span className="rxl-media-label">Representative Preview</span>
+                  </div>
                   <div className="rxl-feature-card-body">
                     <h3>{category.name}</h3>
                     <p>{category.blurb}</p>
@@ -94,7 +128,26 @@ export default async function HomePage() {
             <div className="rxl-case-stages">{caseStudyStages.map((stage) => <div key={stage}><i><b /></i>{stage}</div>)}</div>
             <Link className="rxl-btn rxl-btn-primary" href="/case-studies">Learn More</Link>
           </div>
-          <div className="rxl-case-art"><RackArtwork cols={7} /></div>
+          <div className="rxl-case-art">
+            <Image src={previewMedia.caseStudy.src} alt={previewMedia.caseStudy.alt} width={1400} height={900} sizes="(max-width: 900px) 100vw, 50vw" />
+            <span className="rxl-media-label">Representative Preview imagery</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="rxl-section rxl-career-home">
+        <div className="rxl-wrap rxl-career-home-grid">
+          <div className="rxl-career-home-media">
+            <Image src={previewMedia.careers.src} alt={previewMedia.careers.alt} width={1400} height={960} sizes="(max-width: 900px) 100vw, 52vw" />
+            <span className="rxl-media-label">Representative Preview imagery</span>
+          </div>
+          <div className="rxl-career-home-copy">
+            <span className="rxl-section-eyebrow rxl-section-eyebrow-left">Career Center</span>
+            <h2>Build the systems behind <em>critical infrastructure.</em></h2>
+            <p className="rxl-career-home-lead">Good systems are built by people who care about the details nobody else sees.</p>
+            <p>Explore representative roles spanning engineering, fabrication, field delivery, and commercial work. The Career Center is structured for a future approved ATS connection without pretending live recruiting data exists today.</p>
+            <Link className="rxl-btn rxl-btn-primary" href="/careers">Explore Career Center</Link>
+          </div>
         </div>
       </section>
     </main>

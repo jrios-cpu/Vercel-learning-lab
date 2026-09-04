@@ -12,6 +12,7 @@ const nav = [
   ["Solutions", "/products"],
   ["Workflow", "/workflow"],
   ["Case Studies", "/case-studies"],
+  ["Careers", "/careers"],
   ["Contact", "/contact"],
 ] as const;
 
@@ -60,7 +61,6 @@ export function RxlHeader({ preview }: { preview: boolean }) {
         </div>
         <nav className={`rxl-mobile-nav${mobileOpen ? " open" : ""}`} id="rxl-mobile-nav" aria-label="Mobile navigation">
           {nav.map(([label, href]) => <Link href={href} key={href} onClick={closeMenus}>{label}</Link>)}
-          <Link href="/careers" onClick={closeMenus}>Careers</Link>
           <Link href="/customer-portal" onClick={closeMenus}>Customer Portal</Link>
           <Link href="/employees" onClick={closeMenus}>Employee Login</Link>
           <Link className="rxl-btn rxl-btn-primary" href={RXL_SITE.primaryCta.href} onClick={closeMenus}>{RXL_SITE.primaryCta.label}</Link>
