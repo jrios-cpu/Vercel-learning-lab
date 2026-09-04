@@ -18,8 +18,8 @@ export function TechnicalDrawingPreview({ drawingUrl, alt }: { drawingUrl: strin
     const element = hostRef.current;
     if (!element) return;
     if (!("IntersectionObserver" in window)) {
-      setVisible(true);
-      return;
+      const fallbackTimer = window.setTimeout(() => setVisible(true), 0);
+      return () => window.clearTimeout(fallbackTimer);
     }
 
     const observer = new IntersectionObserver(
@@ -43,10 +43,11 @@ export function TechnicalDrawingPreview({ drawingUrl, alt }: { drawingUrl: strin
     async function renderDrawing() {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      setState("loading");
 
       try {
         const pdfjs = await import("pdfjs-dist");
+        if (cancelled) return;
+        setState("loading");
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
         const task = pdfjs.getDocument({ url: getDrawingProxyUrl(drawingUrl), useWasm: false });
         loadingTask = task;
