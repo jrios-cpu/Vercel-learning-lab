@@ -22,35 +22,5 @@ jobs:
           node-version: '24.x'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Lint home page
-        continue-on-error: true
-        run: npx eslint 'app/(marketing)/page.tsx' --max-warnings=0
-      - name: Lint home artwork
-        continue-on-error: true
-        run: npx eslint components/rxl/home/HomeArtwork.tsx --max-warnings=0
-      - name: Lint hero
-        continue-on-error: true
-        run: npx eslint components/rxl/home/HomeHero.tsx --max-warnings=0
-      - name: Lint workflow component
-        continue-on-error: true
-        run: npx eslint components/rxl/home/DeliveryFlow.tsx --max-warnings=0
-      - name: Lint header
-        continue-on-error: true
-        run: npx eslint components/rxl/layout/RxlHeader.tsx --max-warnings=0
-      - name: Lint footer
-        continue-on-error: true
-        run: npx eslint components/rxl/layout/RxlFooter.tsx --max-warnings=0
-      - name: Lint design tests
-        continue-on-error: true
-        run: npx eslint tests/rxl/home-design.test.tsx tests/rxl/shell.test.tsx --max-warnings=0
-      - name: Typecheck
-        continue-on-error: true
-        run: npm run typecheck
-      - name: Tests
-        continue-on-error: true
-        run: npm run test
-      - name: Next build
-        continue-on-error: true
-        run: npx next build
-      - name: Full lint marker
-        run: npm run lint
+      - name: Full repository gate
+        run: npm run check

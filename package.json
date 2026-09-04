@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "npm run lint && npm run typecheck && npm run test && next build",
     "start": "next start",
-    "lint": "eslint app components lib tests next.config.ts vitest.config.ts eslint.config.mjs --max-warnings=0",
+    "lint": "eslint app --max-warnings=0 && eslint components --max-warnings=0 && eslint lib --max-warnings=0 && eslint tests --max-warnings=0 && eslint next.config.ts vitest.config.ts eslint.config.mjs --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest",
