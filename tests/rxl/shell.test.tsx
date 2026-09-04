@@ -13,7 +13,7 @@ vi.mock("next/link", () => ({
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
 describe("RXL header", () => {
-  it("matches the approved primary navigation and configurator CTA", () => {
+  it("matches the approved primary navigation and exposes both project paths", () => {
     render(<RxlHeader preview />);
     expect(screen.getByRole("link", { name: /RXL home/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole("navigation", { name: "Primary navigation" });
@@ -21,6 +21,7 @@ describe("RXL header", () => {
     expect(labels).toEqual(["Capabilities", "Solutions", "Workflow", "Case Studies", "Careers", "Contact"]);
     expect(within(primaryNav).getByRole("link", { name: "Careers" })).toHaveAttribute("href", "/careers");
     expect(screen.getAllByRole("link", { name: /Start Project/i })[0]).toHaveAttribute("href", "/configurator");
+    expect(screen.getAllByRole("link", { name: /Request a Quote/i })[0]).toHaveAttribute("href", "/rfq");
   });
 
   it("keeps Solutions expansion separate from the navigation label", () => {

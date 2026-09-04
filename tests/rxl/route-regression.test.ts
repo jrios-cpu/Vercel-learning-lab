@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import nextConfig from "@/next.config";
 import { PUBLIC_ROUTE_PATHS } from "@/lib/rxl/site";
 
 describe("RXL public route inventory", () => {
@@ -22,6 +23,11 @@ describe("RXL public route inventory", () => {
       "/legal/privacy",
       "/legal/terms",
     ]));
+  });
+
+  it("keeps Request a Quote as a first-class route instead of redirecting it to the configurator", async () => {
+    const redirects = await nextConfig.redirects?.();
+    expect(redirects ?? []).not.toEqual(expect.arrayContaining([expect.objectContaining({ source: "/rfq" })]));
   });
 
   it("does not treat the engineering lab as a public marketing route", () => {
