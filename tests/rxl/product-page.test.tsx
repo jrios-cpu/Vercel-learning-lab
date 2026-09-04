@@ -34,7 +34,7 @@ describe("ProductPageView", () => {
     expect(screen.getByRole("heading", { name: product.title })).toBeInTheDocument();
     expect(screen.getAllByText(product.partNumber).length).toBeGreaterThan(0);
     expect(screen.getByRole("tab", { name: /Specifications/i })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByText("42U")).toBeInTheDocument();
+    expect(screen.getAllByText("42U").length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole("tab", { name: /Documents/i }));
     expect(screen.getByText(/Specification sheet/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Configure|Start Project/i })).toHaveAttribute("href", expect.stringContaining(product.partNumber));
