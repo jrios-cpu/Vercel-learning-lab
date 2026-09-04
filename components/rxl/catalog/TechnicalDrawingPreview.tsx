@@ -17,9 +17,9 @@ export function TechnicalDrawingPreview({ drawingUrl, alt }: { drawingUrl: strin
   useEffect(() => {
     const element = hostRef.current;
     if (!element) return;
-    if (!("IntersectionObserver" in window)) {
-      const fallbackTimer = window.setTimeout(() => setVisible(true), 0);
-      return () => window.clearTimeout(fallbackTimer);
+    if (typeof globalThis.IntersectionObserver !== "function") {
+      const fallbackTimer = globalThis.setTimeout(() => setVisible(true), 0);
+      return () => globalThis.clearTimeout(fallbackTimer);
     }
 
     const observer = new IntersectionObserver(
@@ -74,7 +74,8 @@ export function TechnicalDrawingPreview({ drawingUrl, alt }: { drawingUrl: strin
         }).promise;
 
         if (!cancelled) setState("ready");
-        await pdf.destroy();
+        await task.destroy();
+        loadingTask = null;
       } catch {
         if (!cancelled) setState("error");
       }
