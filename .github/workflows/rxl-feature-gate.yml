@@ -22,5 +22,17 @@ jobs:
           node-version: '24.x'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Full repository gate
-        run: npm run check
+      - name: Lint
+        continue-on-error: true
+        run: npm run lint
+      - name: Typecheck
+        continue-on-error: true
+        run: npm run typecheck
+      - name: Tests
+        continue-on-error: true
+        run: npm run test
+      - name: Next build
+        continue-on-error: true
+        run: npx next build
+      - name: Enforce gate
+        run: npm run lint && npm run typecheck && npm run test && npx next build
