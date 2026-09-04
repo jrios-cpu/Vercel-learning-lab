@@ -10,7 +10,14 @@ import { homeContent } from "@/lib/rxl/data/content";
 type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; children: ReactNode };
 type MockImageProps = ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; priority?: boolean };
 vi.mock("next/link", () => ({ default: ({ href, children, ...props }: MockLinkProps) => createElement("a", { ...props, href }, children) }));
-vi.mock("next/image", () => ({ default: ({ fill: _fill, priority: _priority, ...props }: MockImageProps) => createElement("img", props) }));
+vi.mock("next/image", () => ({
+  default: (props: MockImageProps) => {
+    const { fill, priority, ...imageProps } = props;
+    void fill;
+    void priority;
+    return createElement("img", imageProps);
+  },
+}));
 
 describe("approved RXL home design contract", () => {
   it("keeps the winning hero messaging and CTA pair", () => {
