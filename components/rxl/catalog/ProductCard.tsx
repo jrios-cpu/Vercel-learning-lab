@@ -3,6 +3,7 @@ import type { Product } from "@/lib/rxl/types/catalog";
 
 export function ProductCard({ product }: { product: Product }) {
   const href = `/products/${product.categorySlug}/${encodeURIComponent(product.partNumber)}`;
+  const quoteHref = `/rfq?part=${encodeURIComponent(product.partNumber)}`;
   return (
     <article className="rxl-product-card">
       <Link className="rxl-product-visual" href={href} aria-label={`View ${product.title}`}>
@@ -13,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
         <h2><Link href={href}>{product.title}</Link></h2>
         <p>{product.shortDescription}</p>
         {product.leadTime && <div className="rxl-product-card-meta"><span>Representative lead time</span><strong>{product.leadTime}</strong></div>}
-        <div className="rxl-product-card-footer"><span className="rxl-demo-badge">Representative</span><Link className="rxl-card-link" href={href}>View product →</Link></div>
+        <div className="rxl-product-card-footer"><span className="rxl-demo-badge">Representative</span><div className="rxl-product-card-actions"><Link className="rxl-card-link" href={href}>View product →</Link><Link className="rxl-card-link rxl-card-link-quote" href={quoteHref}>Request Quote</Link></div></div>
       </div>
     </article>
   );

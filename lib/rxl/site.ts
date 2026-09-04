@@ -8,6 +8,7 @@ export const PUBLIC_ROUTE_PATHS = [
   "/products",
   "/search",
   "/configurator",
+  "/rfq",
   "/resources",
   "/news",
   "/careers",

@@ -12,6 +12,7 @@ describe("RXL public route inventory", () => {
       "/products",
       "/search",
       "/configurator",
+      "/rfq",
       "/resources",
       "/news",
       "/careers",

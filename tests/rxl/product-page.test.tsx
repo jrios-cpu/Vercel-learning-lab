@@ -29,14 +29,15 @@ const product: Product = {
 };
 
 describe("ProductPageView", () => {
-  it("shows identity, specifications, documents, and configure CTA through the tab flow", () => {
+  it("offers both full configuration and the fast RFQ path while preserving accessible tabs", () => {
     render(<ProductPageView product={product} related={[]} />);
     expect(screen.getByRole("heading", { name: product.title })).toBeInTheDocument();
     expect(screen.getAllByText(product.partNumber).length).toBeGreaterThan(0);
     expect(screen.getByRole("tab", { name: /Specifications/i })).toHaveAttribute("aria-selected", "true");
     expect(screen.getAllByText("42U").length).toBeGreaterThan(0);
+    expect(screen.getByRole("link", { name: /Configure|Start Project/i })).toHaveAttribute("href", expect.stringContaining(product.partNumber));
+    expect(screen.getByRole("link", { name: /Request a Quote/i })).toHaveAttribute("href", expect.stringContaining(product.partNumber));
     fireEvent.click(screen.getByRole("tab", { name: /Documents/i }));
     expect(screen.getByText(/Specification sheet/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Configure|Start Project/i })).toHaveAttribute("href", expect.stringContaining(product.partNumber));
   });
 });

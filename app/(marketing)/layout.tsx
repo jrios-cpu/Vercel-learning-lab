@@ -2,6 +2,7 @@ import "../rxl-marketing.css";
 import "../rxl-catalog.css";
 import "../rxl-product.css";
 import "../rxl-configurator.css";
+import "../rxl-rfq.css";
 import "../rxl-careers.css";
 import "../rxl-analytics.css";
 import "../rxl-rc1.css";
