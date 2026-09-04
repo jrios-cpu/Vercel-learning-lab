@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  check:
+  quality:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -26,7 +26,54 @@ jobs:
         run: npm run lint
       - name: Typecheck
         run: npm run typecheck
-      - name: Tests
-        run: npm run test
       - name: Next build
         run: npx next build
+
+  test-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        file:
+          - tests/rxl/analytics.test.ts
+          - tests/rxl/catalog-browser.test.tsx
+          - tests/rxl/catalog.test.ts
+          - tests/rxl/configurator-reducer.test.ts
+          - tests/rxl/contact-form.test.tsx
+          - tests/rxl/content-provider.test.ts
+          - tests/rxl/home-design.test.tsx
+          - tests/rxl/integration-boundaries.test.tsx
+          - tests/rxl/jobs-provider.test.ts
+          - tests/rxl/product-page.test.tsx
+          - tests/rxl/quote-payload.test.ts
+          - tests/rxl/route-regression.test.ts
+          - tests/rxl/seo.test.ts
+          - tests/rxl/shell.test.tsx
+          - tests/rxl/site.test.ts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run isolated test file
+        run: npx cross-env NODE_ENV=test vitest run ${{ matrix.file }}
+
+  full-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Full Vitest suite
+        run: npm run test
