@@ -1,4 +1,36 @@
+import Link from "next/link";
 import { Configurator } from "@/components/rxl/configurator/Configurator";
 import { catalogProvider } from "@/lib/rxl/providers/catalog";
-export const metadata = { title: "Start Project", description: "Build a representative RXL project configuration and structured quote request." };
-export default async function ConfiguratorPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) { const params = await searchParams; const part = typeof params.part === "string" ? params.part : ""; const products = await catalogProvider.listProducts(); const initialProduct = part ? await catalogProvider.getProductByPartNumber(part) : null; return <main id="main-content"><section className="rxl-page-head"><div className="rxl-wrap"><nav className="rxl-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Start Project</span></nav><h1>Turn project constraints into a structured starting point.</h1><p>Five focused steps capture application, product line, configuration, accessories, and project details without pretending pricing or routing is live.</p></div></section><section className="rxl-section rxl-section-gray"><div className="rxl-wrap"><Configurator products={products} initialProduct={initialProduct} /></div></section></main>; }
+
+export const metadata = {
+  title: "Start Project",
+  description: "Build a representative RXL project configuration and structured quote request.",
+};
+
+export default async function ConfiguratorPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const part = typeof params.part === "string" ? params.part : "";
+  const products = await catalogProvider.listProducts();
+  const initialProduct = part ? await catalogProvider.getProductByPartNumber(part) : null;
+
+  return (
+    <main id="main-content">
+      <section className="rxl-page-head">
+        <div className="rxl-wrap">
+          <nav className="rxl-breadcrumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span>/</span><span>Start Project</span>
+          </nav>
+          <h1>Turn project constraints into a structured starting point.</h1>
+          <p>Five focused steps capture application, product line, configuration, accessories, and project details without pretending pricing or routing is live.</p>
+        </div>
+      </section>
+      <section className="rxl-section rxl-section-gray">
+        <div className="rxl-wrap"><Configurator products={products} initialProduct={initialProduct} /></div>
+      </section>
+    </main>
+  );
+}
