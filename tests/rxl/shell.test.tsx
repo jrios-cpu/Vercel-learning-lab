@@ -21,7 +21,9 @@ describe("RXL header", () => {
     expect(labels).toEqual(["Capabilities", "Solutions", "Workflow", "Case Studies", "Careers", "Contact"]);
     expect(within(primaryNav).getByRole("link", { name: "Careers" })).toHaveAttribute("href", "/careers");
     expect(screen.getAllByRole("link", { name: /Start Project/i })[0]).toHaveAttribute("href", "/configurator");
-    expect(screen.getAllByRole("link", { name: /Request a Quote/i })[0]).toHaveAttribute("href", "/rfq");
+    const quote = screen.getAllByRole("link", { name: /Request a Quote/i })[0];
+    expect(quote).toHaveAttribute("href", "/rfq");
+    expect(quote).toHaveClass("rxl-header-quote");
   });
 
   it("keeps Solutions expansion separate from the navigation label", () => {

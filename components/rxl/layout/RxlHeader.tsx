@@ -55,7 +55,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
           </nav>
           <div className="rxl-header-actions">
             {RXL_SITE.contact.phone && <a className="rxl-phone" href={`tel:${RXL_SITE.contact.phone.replace(/[^+\d]/g, "")}`}>{RXL_SITE.contact.phone}</a>}
-            <Link className="rxl-btn rxl-btn-outline rxl-btn-sm" href="/rfq" onClick={closeMenus}>Request a Quote</Link>
+            <Link className="rxl-btn rxl-btn-outline rxl-btn-sm rxl-header-quote" href="/rfq" onClick={closeMenus}>Request a Quote</Link>
             <Link className="rxl-btn rxl-btn-primary rxl-btn-sm" href={RXL_SITE.primaryCta.href} onClick={closeMenus}>{RXL_SITE.primaryCta.label}</Link>
             <button className={`rxl-burger${mobileOpen ? " open" : ""}`} type="button" aria-label="Menu" aria-expanded={mobileOpen} aria-controls="rxl-mobile-nav" onClick={() => setMobileOpen((value) => !value)}><span /></button>
           </div>
@@ -64,7 +64,7 @@ export function RxlHeader({ preview }: { preview: boolean }) {
           {nav.map(([label, href]) => <Link href={href} key={href} onClick={closeMenus}>{label}</Link>)}
           <Link href="/customer-portal" onClick={closeMenus}>Customer Portal</Link>
           <Link href="/employees" onClick={closeMenus}>Employee Login</Link>
-          <Link className="rxl-btn rxl-btn-outline" href="/rfq" onClick={closeMenus}>Request a Quote</Link>
+          <Link className="rxl-btn rxl-btn-outline rxl-mobile-quote" href="/rfq" onClick={closeMenus}>Request a Quote</Link>
           <Link className="rxl-btn rxl-btn-primary" href={RXL_SITE.primaryCta.href} onClick={closeMenus}>{RXL_SITE.primaryCta.label}</Link>
         </nav>
       </header>
