@@ -18,6 +18,10 @@ export default async function ProductsPage() {
           </nav>
           <h1>Infrastructure solutions, organized around the work.</h1>
           <p>Search and filter representative product concepts from the approved RXL prototype. Pricing, inventory, and live availability are intentionally not connected.</p>
+          <div className="rxl-solutions-actions">
+            <Link className="rxl-btn rxl-btn-primary" href="/rfq">Request a Quote</Link>
+            <Link className="rxl-btn rxl-btn-outline" href="/configurator">Start Project</Link>
+          </div>
         </div>
       </section>
       <section className="rxl-section">

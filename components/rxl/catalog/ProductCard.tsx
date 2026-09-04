@@ -1,13 +1,30 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/rxl/types/catalog";
+
+const representativeMedia: Record<Product["categorySlug"], string> = {
+  cabinets: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=82",
+  containment: "https://images.unsplash.com/photo-1643119775771-54a727776db5?auto=format&fit=crop&w=1200&q=82",
+  cooling: "https://images.unsplash.com/photo-1774770080861-bc2c50829c92?auto=format&fit=crop&w=1200&q=82",
+};
 
 export function ProductCard({ product }: { product: Product }) {
   const href = `/products/${product.categorySlug}/${encodeURIComponent(product.partNumber)}`;
   const quoteHref = `/rfq?part=${encodeURIComponent(product.partNumber)}`;
+  const media = product.media[0];
+  const src = media?.src ?? representativeMedia[product.categorySlug];
+  const alt = media?.alt ?? `Representative preview for ${product.series} ${product.category}`;
+
   return (
     <article className="rxl-product-card">
       <Link className="rxl-product-visual" href={href} aria-label={`View ${product.title}`}>
-        <div className={`rxl-product-visual-art rxl-product-visual-${product.categorySlug}`} aria-hidden="true"><span>{product.series}</span><strong>{product.partNumber}</strong></div>
+        <Image className="rxl-product-visual-image" src={src} alt={alt} fill sizes="(max-width: 560px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+        <div className="rxl-product-visual-scrim" aria-hidden="true" />
+        <div className="rxl-product-visual-copy" aria-hidden="true">
+          {!media && <em>Representative Preview</em>}
+          <span>{product.series}</span>
+          <strong>{product.partNumber}</strong>
+        </div>
       </Link>
       <div className="rxl-product-card-body">
         <div className="rxl-product-card-meta"><span>{product.category}</span><span>{product.partNumber}</span></div>

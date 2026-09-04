@@ -19,7 +19,6 @@ const nextConfig: NextConfig = {
     { source: "/performance-lab", destination: "/lab/performance", permanent: true },
     { source: "/loading-demo", destination: "/lab/error-handling", permanent: true },
     { source: "/enterprise-demo", destination: "/lab", permanent: true },
-    { source: "/rfq", destination: "/configurator", permanent: true },
     { source: "/products/structural-frame-x1", destination: "/products", permanent: true },
     { source: "/products/thermal-panel-t40", destination: "/products", permanent: true },
     { source: "/products/rackshield-r2", destination: "/products", permanent: true },
