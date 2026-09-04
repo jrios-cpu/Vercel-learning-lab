@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { TechnicalDrawingPreview } from "@/components/rxl/catalog/TechnicalDrawingPreview";
+import { getProductDrawingUrl } from "@/lib/rxl/drawings";
 import type { Product } from "@/lib/rxl/types/catalog";
 
 export function ProductGallery({ product }: { product: Product }) {
   const [selected, setSelected] = useState(0);
   const media = product.media;
   const current = media[selected];
+  const drawingUrl = getProductDrawingUrl(product);
 
   return (
     <div className="rxl-pdp-gallery">
@@ -14,6 +17,8 @@ export function ProductGallery({ product }: { product: Product }) {
         {current ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={current.src} alt={current.alt} />
+        ) : drawingUrl ? (
+          <TechnicalDrawingPreview drawingUrl={drawingUrl} alt={`Technical drawing for ${product.title}`} />
         ) : (
           <div className={`rxl-pdp-placeholder rxl-product-visual-${product.categorySlug}`} role="img" aria-label={`Representative visual for ${product.title}`}>
             <span>{product.series}</span>
