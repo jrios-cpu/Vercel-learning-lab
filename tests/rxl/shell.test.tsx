@@ -18,7 +18,8 @@ describe("RXL header", () => {
     expect(screen.getByRole("link", { name: /RXL home/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole("navigation", { name: "Primary navigation" });
     const labels = within(primaryNav).getAllByRole("link").map((link) => link.textContent);
-    expect(labels).toEqual(["Capabilities", "Solutions", "Workflow", "Case Studies", "Contact"]);
+    expect(labels).toEqual(["Capabilities", "Solutions", "Workflow", "Case Studies", "Careers", "Contact"]);
+    expect(within(primaryNav).getByRole("link", { name: "Careers" })).toHaveAttribute("href", "/careers");
     expect(screen.getAllByRole("link", { name: /Start Project/i })[0]).toHaveAttribute("href", "/configurator");
   });
 
