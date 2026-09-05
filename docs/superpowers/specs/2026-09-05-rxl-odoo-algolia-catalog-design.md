@@ -27,6 +27,8 @@ The supplied `Odoo Export.xlsx` currently yields the following observed normaliz
 
 These counts are acceptance targets for the first importer version. A future export is allowed to change the counts, but the importer must report any delta explicitly.
 
+The five current source groups are normalized to the RXL public catalog taxonomy for Cable Pathways, Open Racks, Cable Management, Wall Mounts, and Cabinets & Enclosures. The importer must keep an explicit source-category-to-public-category mapping rather than infer categories from free text.
+
 ## 3. Source-of-Truth Rules
 
 ### 3.1 Product identity
@@ -36,8 +38,10 @@ For every normalized product:
 - `partNumber` comes from Odoo `Internal Reference` and is preserved exactly.
 - `objectID` for Algolia is the exact part number unless a future migration requires a stable surrogate.
 - `title` comes from Odoo `Display Name`, with formatting cleanup only.
-- `category` comes from the Odoo source section/category mapping.
-- `familyId` is derived deterministically from the RXL product family so variants can be grouped without losing SKU identity.
+- `category` comes from the explicit Odoo source section/category mapping.
+- `familyId` is derived deterministically from the normalized RXL base product/family identifier so variants can be grouped without losing SKU identity.
+
+The family derivation implementation must be covered by fixtures from every source category before the full import. If a SKU cannot be assigned to a family deterministically, it remains individually addressable and is reported for review rather than being force-grouped into a guessed family.
 
 No product may be created by inference alone.
 
@@ -187,11 +191,24 @@ Family media can be shared when appropriate, but variant specifications and SKU 
 
 Algolia powers discovery, text search, facets, relevance, and family distinct behavior. It does not become the product master.
 
-### 7.2 Records
+### 7.2 Target application identity gate
+
+The currently embedded Algolia Experiences frontend uses application ID `QVGC9APPPY`.
+
+Before any production index write:
+
+- verify that the write-capable Algolia connection/credential targets `QVGC9APPPY`
+- verify the intended production index name explicitly
+- create or replace records only in that confirmed target
+- stop the import if the connected write destination cannot be proven to match the frontend application
+
+A successful write to a different Algolia application is considered a failed rollout, not a partial success.
+
+### 7.3 Records
 
 Use one Algolia record per SKU. Each record includes the exact SKU fields plus `familyId` and searchable/facet attributes.
 
-### 7.3 Search relevance
+### 7.4 Search relevance
 
 Recommended priority:
 
@@ -203,17 +220,17 @@ Recommended priority:
 
 Exact part-number search must not be outranked by a description match.
 
-### 7.4 Distinct/grouping
+### 7.5 Distinct/grouping
 
 Use `familyId` for distinct/grouped browse behavior. The implementation must preserve the ability to return an exact SKU when the user searches for or filters down to it.
 
-### 7.5 Facets
+### 7.6 Facets
 
 Facet candidates are generated from real normalized specifications. The UI only exposes facets relevant to the current result set/category.
 
 A cabinet may expose Rack Units, Rail Style, Width, Depth, Color, and other applicable attributes. A J-bolt or cable-pathway product should not inherit irrelevant cabinet facets simply because another category uses them.
 
-### 7.6 Failure behavior
+### 7.7 Failure behavior
 
 If Algolia is unavailable:
 
@@ -239,7 +256,8 @@ Odoo Export.xlsx
   -> parse rows
   -> associate continuation rows with their SKU
   -> normalize exact product fields
-  -> derive family/category keys
+  -> apply explicit source-category mapping
+  -> derive family keys deterministically
   -> consolidate variant specifications
   -> apply 12-SKU description fallback rule when needed
   -> deduplicate drawing URLs
@@ -247,6 +265,7 @@ Odoo Export.xlsx
   -> cross-reference verified official RXL imagery
   -> generate normalized dataset
   -> generate Algolia records
+  -> verify Algolia target application/index identity
   -> run QA gates
   -> publish Preview
 ```
@@ -284,6 +303,7 @@ For the current source export:
 - zero silent loss of continuation-row Variant Values
 - 12 missing Sales Description records use exactly the approved fallback rule
 - source descriptions are otherwise preserved without AI rewriting
+- all family assignments are deterministic or explicitly reported as ungrouped exceptions
 
 ### 11.2 Media integrity
 
@@ -295,6 +315,7 @@ For the current source export:
 
 ### 11.3 Search integrity
 
+- Algolia write destination is verified as the same application used by the frontend
 - exact SKU searches resolve the exact SKU
 - family-name searches group variants appropriately
 - facet combinations return only matching variants
@@ -334,17 +355,19 @@ Unique drawing URLs:       4,068
 Drawings live:                  X
 Drawings stale/invalid:         Y
 Official images matched:        Z
+Ungrouped family exceptions:    U
 Duplicate part numbers:         0
 Normalization errors:           0
 ```
 
-The live/stale/image counts are discovered outputs, not predeclared success values.
+`X`, `Y`, `Z`, and `U` are discovered report outputs, not placeholders that may be skipped or predeclared success values.
 
 ## 13. Security and Credentials
 
 - Never store an Algolia Admin/write key in client code.
 - Browser code may use only a search/experience credential intended for frontend use.
 - Server-side write/index synchronization must use a protected credential or approved connected integration.
+- The write-capable destination must be verified against frontend application ID `QVGC9APPPY` before mutation.
 - The PDF proxy remains strictly allowlisted to approved RXL PDF hosts/paths and must reject arbitrary URL proxying.
 - No Odoo, Algolia, Sanity, or other secret may be committed to GitHub.
 
@@ -382,6 +405,8 @@ The following decisions were explicitly approved during design discussion:
 - real SKU descriptions come from `Sales Description`
 - the 12 currently observed missing descriptions use `Display Name + Variant Values`, with no AI-generated fallback
 - all continuation-row Variant Values are retained
+- source category mapping is explicit rather than inferred from free text
+- family grouping must be deterministic; uncertain SKUs remain ungrouped and are reported instead of guessed
 - all SKUs remain individually addressable
 - default browse groups variants by product family
 - exact SKU search resolves exact SKU
@@ -391,4 +416,5 @@ The following decisions were explicitly approved during design discussion:
 - media URLs are deduplicated and validated before being treated as live
 - representative/stock imagery is not used for real Odoo products
 - dynamic PDP routing is preferred over statically generating every SKU per build
+- Algolia production writes are blocked until the target application/index identity is verified
 - release is blocked on data, search, media, routing, and existing application QA gates
