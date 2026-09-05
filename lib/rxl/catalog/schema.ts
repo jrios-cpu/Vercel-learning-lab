@@ -23,12 +23,14 @@ export type ImportedOdooProduct = {
   partNumber: string;
   familyId: string;
   title: string;
+  rawDisplayName: string;
   category: string;
   categorySlug: string;
   salesDescription: string;
   descriptionSource: DescriptionSource;
   competitorCross: string | null;
   specifications: Record<string, string>;
+  specificationValues: Record<string, string[]>;
   drawingPdfUrl: string | null;
 };
 
@@ -37,12 +39,14 @@ export type RuntimeCatalogProduct = {
   partNumber: string;
   familyId: string;
   title: string;
+  rawDisplayName: string;
   category: string;
   categorySlug: string;
   salesDescription: string;
   descriptionSource: DescriptionSource;
   competitorCross: string | null;
   specifications: Record<string, string>;
+  specificationValues: Record<string, string[]>;
   drawingPdfUrl: string | null;
   drawingStatus: DrawingStatus;
   imageUrl: string | null;
@@ -97,9 +101,15 @@ export function normalizeCategory(section: string) {
   return ODOO_CATEGORY_MAP[canonicalCategoryKey(section)];
 }
 
+export function cleanDisplayName(partNumber: string, displayName: string): string {
+  const normalized = normalizeText(displayName);
+  const escaped = partNumber.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return normalized.replace(new RegExp(`^\\[${escaped}\\]\\s*`, "i"), "").trim() || normalized;
+}
+
 export function deriveFamilyId(partNumber: string, displayName: string): string {
   const exactPartNumber = normalizeText(partNumber);
-  const withoutSkuPrefix = normalizeText(displayName).replace(/^\[[^\]]+\]\s*/, "");
+  const withoutSkuPrefix = cleanDisplayName(exactPartNumber, displayName);
   const beforeVariants = withoutSkuPrefix.split("(", 1)[0]?.trim() ?? "";
   const familyToken = beforeVariants.match(/\bRXL-[A-Z0-9]+(?:-[A-Z0-9]+)*\b/i)?.[0];
   return familyToken ? familyToken.toUpperCase() : exactPartNumber;
