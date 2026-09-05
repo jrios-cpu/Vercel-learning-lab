@@ -34,11 +34,14 @@ export type Product = {
   slug: string;
   partNumber: string;
   series: string;
+  familyId?: string;
   category: string;
   categorySlug: string;
   shortDescription: string;
   longDescription: string;
-  status: "representative" | "verified";
+  status: "representative" | "verified" | "odoo";
+  source?: "odoo" | "representative";
+  variantCount?: number;
   availability?: string | null;
   leadTime?: string | null;
   finish?: string | null;
