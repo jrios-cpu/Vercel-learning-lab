@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { LAB_MODULES } from "@/lib/rxl/lab";
+export default function LabPage() { return <main id="main-content" className="rxl-lab-main"><header className="rxl-lab-header"><div><span>Engineering only · noindex</span><h1>RXL Engineering Lab</h1><p>Runtime behavior, Preview/Production boundaries, caching, feature flags, and controlled failure tooling outside the public marketing shell.</p></div><Link href="/">Return to RXL site</Link></header><section className="rxl-lab-grid">{LAB_MODULES.map((module, index) => <Link className="rxl-lab-card" href={`/lab/${module}`} key={module}><span>0{index + 1}</span><h2>{module.replaceAll("-", " ")}</h2><b>Open module →</b></Link>)}</section></main>; }

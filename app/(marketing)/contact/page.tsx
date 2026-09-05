@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { ContactForm } from "@/components/rxl/forms/ContactForm";
+
+export const metadata = {
+  title: "Contact",
+  description: "Send a validated RXL Preview inquiry without exposing unverified contact information.",
+};
+
+export default function ContactPage() {
+  return (
+    <main id="main-content">
+      <section className="rxl-page-head">
+        <div className="rxl-wrap">
+          <nav className="rxl-breadcrumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span>/</span><span>Contact</span>
+          </nav>
+          <h1>Start with the problem.</h1>
+          <p>Share the application, constraints, or product context you need help with. The Preview acknowledges the request without pretending delivery is configured.</p>
+        </div>
+      </section>
+      <section className="rxl-section">
+        <div className="rxl-wrap rxl-contact-grid">
+          <div>
+            <span className="rxl-eyebrow">General inquiry</span>
+            <h2>Clear context creates a better technical conversation.</h2>
+            <p>No unverified address or phone number is displayed. Contact details can be added when RXL supplies the approved source of truth.</p>
+          </div>
+          <ContactForm />
+        </div>
+      </section>
+    </main>
+  );
+}

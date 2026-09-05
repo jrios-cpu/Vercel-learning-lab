@@ -4,24 +4,39 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run lint && npm run typecheck && next build",
+    "build": "npm run lint && npm run typecheck && npm run test && next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint app --max-warnings=0 && eslint components --max-warnings=0 && eslint lib --max-warnings=0 && eslint tests --max-warnings=0 && eslint next.config.ts vitest.config.ts eslint.config.mjs --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && next build"
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest",
+    "check": "npm run lint && npm run typecheck && npm run test && next build",
+    "catalog:import": "tsx scripts/rxl/catalog/import-odoo.ts",
+    "catalog:validate-drawings": "tsx scripts/rxl/catalog/validate-drawings.ts",
+    "catalog:build-runtime": "tsx scripts/rxl/catalog/build-runtime.ts",
+    "catalog:push-algolia": "tsx scripts/rxl/catalog/push-algolia.ts",
+    "catalog:report": "tsx scripts/rxl/catalog/report.ts"
   },
   "dependencies": {
     "next": "16.3.4",
+    "pdfjs-dist": "6.3.289",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.4",
-    "typescript": "^5.9.0"
+    "exceljs": "4.4.0",
+    "jsdom": "^26.1.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=20"

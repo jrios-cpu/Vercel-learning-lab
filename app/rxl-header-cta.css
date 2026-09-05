@@ -1,0 +1,27 @@
+/* Header CTA hierarchy: Quote is the visible secondary action; Start Project remains primary. */
+.rxl-header-actions .rxl-header-quote{
+  min-height:36px;
+  padding:8px 15px;
+  border:1px solid rgba(255,255,255,.72);
+  background:rgba(255,255,255,.02);
+  color:#fff;
+  box-shadow:none;
+  font-size:9.75px;
+  letter-spacing:.1em;
+}
+.rxl-header-actions .rxl-header-quote:visited{color:#fff}
+.rxl-header-actions .rxl-header-quote:hover{
+  border-color:#fff;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  transform:translateY(-1px);
+}
+.rxl-mobile-nav .rxl-mobile-quote{
+  border-color:rgba(255,255,255,.72);
+  background:transparent;
+  color:#fff;
+}
+.rxl-mobile-nav .rxl-mobile-quote:visited{color:#fff}
+@media(max-width:1120px){
+  .rxl-header-actions .rxl-header-quote{padding-left:11px;padding-right:11px;font-size:9.25px}
+}
