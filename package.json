@@ -10,7 +10,12 @@
     "typecheck": "tsc --noEmit",
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest",
-    "check": "npm run lint && npm run typecheck && npm run test && next build"
+    "check": "npm run lint && npm run typecheck && npm run test && next build",
+    "catalog:import": "tsx scripts/rxl/catalog/import-odoo.ts",
+    "catalog:validate-drawings": "tsx scripts/rxl/catalog/validate-drawings.ts",
+    "catalog:build-runtime": "tsx scripts/rxl/catalog/build-runtime.ts",
+    "catalog:push-algolia": "tsx scripts/rxl/catalog/push-algolia.ts",
+    "catalog:report": "tsx scripts/rxl/catalog/report.ts"
   },
   "dependencies": {
     "next": "16.3.4",
@@ -27,7 +32,9 @@
     "cross-env": "^7.0.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.4",
+    "exceljs": "4.4.0",
     "jsdom": "^26.1.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.9.0",
     "vitest": "^3.2.4"
   },
