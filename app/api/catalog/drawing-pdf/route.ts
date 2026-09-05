@@ -11,13 +11,16 @@ async function fetchDrawing(url: string, redirects = 0): Promise<Response> {
 
   const response = await fetch(url, {
     redirect: "manual",
-    headers: { Accept: "application/pdf" },
+    headers: {
+      Accept: "application/pdf",
+      "User-Agent": "Mozilla/5.0 (compatible; RXLUSA-CatalogPreview/1.0; +https://www.rxlusa.com)",
+    },
     signal: AbortSignal.timeout(10_000),
   });
 
   if (response.status >= 300 && response.status < 400) {
     const location = response.headers.get("location");
-    if (!location) throw new Error("Drawing redirect did not include a location");
+    if (!location) throw new Error(`Drawing redirect ${response.status} did not include a location`);
     return fetchDrawing(new URL(location, url).toString(), redirects + 1);
   }
 
@@ -32,22 +35,40 @@ export async function GET(request: Request) {
 
   try {
     const upstream = await fetchDrawing(src);
+    const contentType = upstream.headers.get("content-type") ?? "";
+    const declaredLength = Number(upstream.headers.get("content-length") ?? 0);
+
     if (!upstream.ok) {
+      console.error("[rxl-drawing-proxy] upstream request failed", {
+        src,
+        status: upstream.status,
+        contentType,
+        declaredLength,
+      });
       return Response.json({ error: "RXL drawing could not be loaded" }, { status: 502 });
     }
 
-    const declaredLength = Number(upstream.headers.get("content-length") ?? 0);
     if (declaredLength > MAX_PDF_BYTES) {
+      console.error("[rxl-drawing-proxy] upstream PDF declared too large", { src, declaredLength });
       return Response.json({ error: "Drawing PDF is too large" }, { status: 413 });
     }
 
     const bytes = new Uint8Array(await upstream.arrayBuffer());
     if (bytes.byteLength > MAX_PDF_BYTES) {
+      console.error("[rxl-drawing-proxy] upstream PDF body too large", { src, bytes: bytes.byteLength });
       return Response.json({ error: "Drawing PDF is too large" }, { status: 413 });
     }
 
     const signature = String.fromCharCode(...bytes.slice(0, 5));
     if (signature !== "%PDF-") {
+      console.error("[rxl-drawing-proxy] upstream response was not PDF", {
+        src,
+        status: upstream.status,
+        contentType,
+        declaredLength,
+        bytes: bytes.byteLength,
+        signature,
+      });
       return Response.json({ error: "Upstream response was not a PDF" }, { status: 502 });
     }
 
@@ -59,7 +80,11 @@ export async function GET(request: Request) {
         "X-Content-Type-Options": "nosniff",
       },
     });
-  } catch {
+  } catch (error) {
+    console.error("[rxl-drawing-proxy] request threw", {
+      src,
+      message: error instanceof Error ? error.message : String(error),
+    });
     return Response.json({ error: "Drawing preview is temporarily unavailable" }, { status: 502 });
   }
 }
