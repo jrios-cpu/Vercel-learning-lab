@@ -7,3 +7,5 @@ out/
 .vercel/
 .DS_Store
 *.log
+catalog-work/
+Odoo Export.xlsx
